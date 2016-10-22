@@ -1,0 +1,9 @@
+<div>
+    <ul>
+        <li ng-repeat="item in items">
+            <!--传递参数-->
+            <a ui-sref="detail({id:item.id,idd:item.id})">{{item.name}}</a>
+        </li>
+    </ul>
+    <a ui-sref="new" class="new">添加</a>
+</div>
