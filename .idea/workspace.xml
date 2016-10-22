@@ -26,8 +26,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1214" />
-    <option name="y" value="23" />
+    <option name="x" value="1075" />
+    <option name="y" value="25" />
     <option name="width" value="1005" />
     <option name="height" value="956" />
   </component>
@@ -141,10 +141,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2069000" />
+    <option name="totallyTimeSpent" value="2074000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1214" y="23" width="1005" height="956" extended-state="0" />
+    <frame x="1075" y="25" width="1005" height="956" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16971545" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
