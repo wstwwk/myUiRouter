@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="routerLearn">
+<head>
+    <style>
+        .active {
+            color: red;
+            font-weight: bold
+        }
+
+        .statevis {
+            position: fixed;
+            right: 2em;
+            top: 2em;
+            z-index: -1;
+        }
+
+        ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            margin: 6px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .item {
+            padding: 4px;
+            background: goldenrod;
+            border-radius: 8px;
+            margin: 3px;
+        }
+
+        .new {
+            padding: 4px;
+            background: red;
+            border-radius: 8px;
+            margin: 3px;
+        }
+
+        a.new {
+            padding: 3px 16px;
+        }
+
+        .left {
+            width: 20%;
+            float: left;
+            border: 1px solid olivedrab;
+        }
+
+        li {
+            list-style-type: none;
+            white-space: nowrap;
+        }
+
+        .right {
+            width: 79%;
+            float: left;
+            border: 1px solid gold;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-ui-router2.js"></script>
+
+
+    <script>
+        //创建一个模块
+        var myApp = angular.module('routerLearn', ['ui.router',
+            'ui.router.visualizer']);
+        /*angular配置阶段**/
+
+        myApp.config(function ($stateProvider) {
+            $stateProvider.state('list', {
+                url: '/list',
+                templateUrl: 'temp/list.html',
+                resolve: {
+                    data: function ($http) {
+                        var pro = $http.get('data.json');
+                        return pro.then(function (res) {
+                            return res.data;
+                        })
+                    }
+                },
+                controller: function ($scope, data) {
+                    $scope.items = data;
+                }
+            })
+                    .state('detail', {
+                        url: '/detail/:id',
+                        views: {
+                            'detail@': {
+                                templateUrl: 'temp/detail.html',
+                                controller: function ($scope, data, $stateParams) {
+                                    var id = $stateParams.id;
+                                    //数组的find方法,找到名字是id的那个人。。
+                                    var person = data.find(function (e) {
+                                        return e.id == id;
+                                    })
+                                    $scope.item = person;
+                                }
+                            }
+                        },
+
+                        parent: 'list'
+
+                    })
+                    .state('new', {
+                        url: '/new',
+                        views: {
+                            /*
+                             *
+                             * 遇到@,
+                             * 意思是:
+                             * viewName@stateName
+                             * @前面是:视图的名字,也就是 <ui-view name="">
+                             * @后面是:状态的名字
+                             * 连起来意思是:把当前状态插入到名字叫viewName的ui-view里面。并且这个ui-view在stateName的模板里面。
+                             *
+                             * **/
+                            'detail@': {
+                                templateUrl: 'temp/new.html',
+                                controller: function ($scope, data) {
+                                    var name = $scope.name;
+                                    var intro = $scope.intro;
+                                    $scope.add = function () {
+                                        var person = {
+                                            name: $scope.name,
+                                            intro: $scope.intro,
+                                            id:Math.random()
+                                        };
+                                        console.log(person);
+                                        data.push(person);
+                                    }
+
+                                }
+                            }
+                        },
+
+                        /*
+                         * 子状态触发,父状态隐含触发
+                         * 父子状态,可以继承resolve,data。
+                         * **/
+                        parent: 'list'
+
+                    })
+        })
+
+    </script>
+    <script src="lib/show-current-browser-url.js"></script>
+    <script src="lib/d3.js"></script>
+    <script src="lib/ui-router-visulaizer.js"></script>
+</head>
+<body>
+
+
+<a ui-sref="list" href="#">武林大学</a>
+
+
+<!--模板渲染到的地方-->
+<ui-view class="left"></ui-view>
+<ui-view name="detail" class="right"></ui-view>
+
+
+<uir-state-vis class="statevis" width="300" height="300"></uir-state-vis>
+
+</body>
+</html>
